@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_ui2/pages/config.dart';
 import 'components/custom_appbar.dart';
+import 'package:travel_ui2/models/trip.dart';
 import 'components/trip_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,7 +26,15 @@ class HomePageState extends State<HomePage> {
       body: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: defaultHorizontalPadding),
-        child: TripCard(),
+        child: ListView.builder(
+          itemCount: listOfTrips.length,
+          itemBuilder: (BuildContext context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TripCard(trip: listOfTrips[index]),
+            );
+          },
+        ),
       ),
     );
   }

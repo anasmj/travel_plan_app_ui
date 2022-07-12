@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:travel_ui2/models/trip.dart';
 import 'package:travel_ui2/url.dart';
+import '../../../models/trip.dart';
 
 class TripCard extends StatelessWidget {
+  final Trip trip;
   final String tripDetails =
       "On a trip to America, Looking for someone to join me on this epic journey through american";
 
-  const TripCard({
-    super.key,
-  });
+  const TripCard({super.key, required this.trip});
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +18,15 @@ class TripCard extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(8),
-          bottomRight: Radius.circular(8),
+          bottomLeft: Radius.circular(15),
+          bottomRight: Radius.circular(15),
         ),
         boxShadow: [
-          BoxShadow(blurRadius: 2.0, offset: Offset(0, 2)),
+          BoxShadow(
+            blurRadius: 2.0,
+            offset: Offset(0, 2),
+            spreadRadius: 0.1,
+          ),
         ],
       ),
       child: Column(
@@ -37,14 +40,15 @@ class TripCard extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                      //backgroundColor: Colors.blue,
-                      radius: 25,
-                      backgroundImage: NetworkImage(user6)),
+                    //backgroundColor: Colors.blue,
+                    radius: 25,
+                    backgroundImage: NetworkImage(trip.user.profilePhotoUrl),
+                  ),
                   const SizedBox(
                     width: 4.0,
                   ),
                   Text(
-                    'Jennifer ',
+                    trip.user.firstName,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   const Spacer(),
@@ -74,7 +78,7 @@ class TripCard extends StatelessWidget {
                   ),
                 ),
                 child: ShowTripImage(
-                  networkImgUrl: imageURL,
+                  networkImgUrl: trip.tripImageUrl,
                 ),
               ),
               //TRIP DURATION
@@ -83,14 +87,14 @@ class TripCard extends StatelessWidget {
                 left: 12,
                 child: Row(
                   children: [
-                    const TripDurationContainer(
-                      tripDuration: "7",
+                    TripDurationContainer(
+                      tripDuration: trip.tripDuration.toString(),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      "day trip",
+                      "days trip",
                       style: Theme.of(context)
                           .textTheme
                           .headline6!
@@ -99,7 +103,6 @@ class TripCard extends StatelessWidget {
                   ],
                 ),
               ),
-              //TODO: FIX PROBLEM
               Positioned(
                 top: 12,
                 right: 12,
@@ -121,7 +124,7 @@ class TripCard extends StatelessWidget {
                 bottom: 20,
                 left: 20,
                 child: Text(
-                  'Italy',
+                  trip.destination,
                   style: Theme.of(context).textTheme.subtitle1!.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -138,7 +141,7 @@ class TripCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(
                 left: 8.0, top: 30.0, right: 8.0, bottom: 12),
-            child: Text(tripDetails),
+            child: Text(trip.tripDescription),
           ),
           const Divider(
             indent: 20,
@@ -265,15 +268,6 @@ class _TripJoinedWidgetState extends State<PeopleJoined> {
       ],
     );
   }
-
-  // Widget getAvatar({String imgUrl = " "}) => CircleAvatar(
-  //     backgroundColor: Colors.white,
-  //     radius: 22,
-  //     child: CircleAvatar(
-  //       backgroundColor: Colors.amber,
-  //       radius: 20,
-  //       backgroundImage: NetworkImage(_url),
-  //     ));
 }
 
 class MyAvatar extends StatefulWidget {
