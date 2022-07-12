@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:travel_ui2/models/trip.dart';
 import 'package:travel_ui2/url.dart';
 
 class TripCard extends StatelessWidget {
@@ -38,7 +39,7 @@ class TripCard extends StatelessWidget {
                   CircleAvatar(
                       //backgroundColor: Colors.blue,
                       radius: 25,
-                      backgroundImage: NetworkImage(imageURL)),
+                      backgroundImage: NetworkImage(user6)),
                   const SizedBox(
                     width: 4.0,
                   ),
@@ -109,11 +110,22 @@ class TripCard extends StatelessWidget {
                 bottom: 20,
                 right: 20,
                 child: Text(
-                  'On TripCard',
+                  'On Trip',
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
                       .copyWith(color: Colors.amber),
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                left: 20,
+                child: Text(
+                  'Italy',
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5),
                 ),
               ),
               //JOiN TRIP BUTTON
