@@ -9,26 +9,12 @@ class TripCard extends StatelessWidget {
       "On a trip to America, Looking for someone to join me on this epic journey through american";
 
   const TripCard({super.key, required this.trip});
-
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Container(
       //Contains everything as card
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(15),
-          bottomRight: Radius.circular(15),
-        ),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 2.0,
-            offset: Offset(0, 2),
-            spreadRadius: 0.1,
-          ),
-        ],
-      ),
+      decoration: getContainerDecoration(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -52,13 +38,7 @@ class TripCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   const Spacer(),
-                  Text(
-                    'Two hours ago',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: Colors.grey),
-                  ),
+                  TimeStamp(),
                 ],
               ),
             ),
@@ -68,68 +48,40 @@ class TripCard extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               //Contains trip photo
-              Container(
-                height: 300,
-                width: screenSize.width * 95,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                ),
-                child: ShowTripImage(
-                  networkImgUrl: trip.tripImageUrl,
-                ),
-              ),
+              getTripPhoto(screenSize),
               //TRIP DURATION
               Positioned(
                 top: 12,
                 left: 12,
-                child: Row(
-                  children: [
-                    TripDurationContainer(
-                      tripDuration: trip.tripDuration.toString(),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "days trip",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: Colors.white),
-                    ),
-                  ],
-                ),
+                child: getTripDurationText(context, trip.tripDuration),
               ),
+
               Positioned(
                 top: 12,
                 right: 12,
-                child: PeopleJoined(),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    if (trip.peopleJoined.isEmpty) Text('Empty'),
+                    if (trip.peopleJoined.length == 1)
+                      SingleAvater(
+                          imageUrl: trip.peopleJoined[0].profilePhotoUrl),
+                    if (trip.peopleJoined.length == 2) getProfilePhotoForTwo(),
+                    if (trip.peopleJoined.length > 2)
+                      getMoreThanTwoProfilePhoto(),
+                  ],
+                ),
               ),
 
               Positioned(
                 bottom: 20,
                 right: 20,
-                child: Text(
-                  'On Trip',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(color: Colors.amber),
-                ),
+                child: onTripText(context),
               ),
               Positioned(
                 bottom: 20,
                 left: 20,
-                child: Text(
-                  trip.destination,
-                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5),
-                ),
+                child: destinationText(context),
               ),
               //JOiN TRIP BUTTON
               const Positioned(
@@ -160,29 +112,189 @@ class TripCard extends StatelessWidget {
       ),
     );
   }
-}
 
-//FETCHES IMAGES FROM NETWOWORK
-class CircularIamge extends StatelessWidget {
-  String url = "";
-  CircularIamge({super.key, required this.url});
+  Text destinationText(BuildContext context) {
+    return Text(
+      trip.destination,
+      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+          color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  Text onTripText(BuildContext context) {
+    return Text(
+      'On Trip',
+      style:
+          Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.amber),
+    );
+  }
+
+  Stack getMoreThanTwoProfilePhoto() {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
-        const Center(
-          child: CircularProgressIndicator(),
+        //middle image
+        Positioned(
+          left: -36,
+          child: SingleAvater(
+            imageUrl: trip.peopleJoined[2].profilePhotoUrl,
+          ),
         ),
-        FadeInImage.memoryNetwork(
-          placeholder: kTransparentImage,
-          image: url,
-          fit: BoxFit.cover,
+        Positioned(
+          left: -18,
+          child: SingleAvater(
+            imageUrl: trip.peopleJoined[1].profilePhotoUrl,
+          ),
+        ),
+
+        //front image
+        SingleAvater(
+          numOfPeopleJoined: trip.peopleJoined.length,
+        ),
+      ],
+    );
+  }
+
+  Stack getProfilePhotoForTwo() {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        //backward image
+        Positioned(
+          left: -18,
+          child: SingleAvater(
+            imageUrl: trip.peopleJoined[1].profilePhotoUrl,
+          ),
+        ),
+        //front image
+        SingleAvater(
+          imageUrl: trip.peopleJoined[0].profilePhotoUrl,
+        ),
+      ],
+    );
+  }
+
+  Row getTripDurationText(BuildContext context, int tripDuration) {
+    return Row(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          child: Center(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
+              child: Text(
+                tripDuration.toString(),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontWeight: FontWeight.w900),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        Text(
+          "days trip",
+          style: Theme.of(context)
+              .textTheme
+              .headline6!
+              .copyWith(color: Colors.white),
+        ),
+      ],
+    );
+  }
+
+  Container getTripPhoto(Size screenSize) {
+    return Container(
+        height: 300,
+        width: screenSize.width * 95,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+        // child: ShowTripImage(
+        //   networkImgUrl: trip.tripImageUrl,
+        child: Stack(
+          children: [
+            const Center(child: CircularProgressIndicator()),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              child: FadeInImage.memoryNetwork(
+                height: 300,
+                width: double.infinity,
+                placeholder: kTransparentImage,
+                image: trip.tripImageUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+        ));
+  }
+
+  BoxDecoration getContainerDecoration() {
+    return const BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(15),
+        bottomRight: Radius.circular(15),
+      ),
+      boxShadow: [
+        BoxShadow(
+          blurRadius: 2.0,
+          offset: Offset(0, 2),
+          spreadRadius: 0.1,
         ),
       ],
     );
   }
 }
+
+class TimeStamp extends StatelessWidget {
+  const TimeStamp({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Two hours ago',
+      style:
+          Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey),
+    );
+  }
+}
+
+//FETCHES IMAGES FROM NETWOWORK
+// ignore: must_be_immutable
+// class CircularIamge extends StatelessWidget {
+//   String url = "";
+//   CircularIamge({super.key, required this.url});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         const Center(
+//           child: CircularProgressIndicator(),
+//         ),
+//         FadeInImage.memoryNetwork(
+//           placeholder: kTransparentImage,
+//           image: url,
+//           fit: BoxFit.cover,
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 //RETURNS JOIN BUTTON
 class JoinTripButton extends StatelessWidget {
@@ -239,58 +351,54 @@ class ShowTripImage extends StatelessWidget {
   }
 }
 
-//RETURN THREE CIRCLE AVATER IN A STACK
-class PeopleJoined extends StatefulWidget {
-  PeopleJoined({super.key});
+// TODO:  working on avaters
+class SingleAvater extends StatefulWidget {
+  SingleAvater({super.key, this.imageUrl, this.numOfPeopleJoined});
+
+  String? imageUrl;
+  int? numOfPeopleJoined;
 
   @override
-  State<PeopleJoined> createState() => _TripJoinedWidgetState();
+  State<SingleAvater> createState() => _MyAvaterState();
 }
 
-class _TripJoinedWidgetState extends State<PeopleJoined> {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        //back avater
-        Positioned(
-          left: -36,
-          child: MyAvatar(),
-        ),
-        //middle avater
-        Positioned(
-          left: -18,
-          child: MyAvatar(),
-        ),
-        //front avater
-        MyAvatar()
-      ],
-    );
-  }
-}
-
-class MyAvatar extends StatefulWidget {
-  MyAvatar({
-    super.key,
-  });
-
-  @override
-  State<MyAvatar> createState() => _MyAvaterState();
-}
-
-class _MyAvaterState extends State<MyAvatar> {
+class _MyAvaterState extends State<SingleAvater> {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
+      // border
       backgroundColor: Colors.white,
       radius: 22,
-      child: CircleAvatar(
-        backgroundColor: Colors.amber,
-        radius: 20,
-        backgroundImage: NetworkImage(
-          imageURL,
-        ),
+      child: widget.numOfPeopleJoined !=
+              null //RETURNS NUMBER OR PROFILE PICTURE DEPENDING ON PROVIDED VALUE
+          ? getNoOfPeopleJoined()
+          : getProfilePicture(),
+    );
+  }
+
+  //RETURNS A NUMBER IN A CIRCLE AVATAR
+  CircleAvatar getNoOfPeopleJoined() {
+    return CircleAvatar(
+      //main circle avater
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      radius: 20,
+      child: widget.numOfPeopleJoined != null
+          ? Text(
+              '+${(widget.numOfPeopleJoined! - 2).toString()}',
+              style: const TextStyle(color: Colors.white),
+            )
+          : const Text(''),
+    );
+  }
+
+  //RETURNS PROFILE PICTURE
+  CircleAvatar getProfilePicture() {
+    return CircleAvatar(
+      //main circle avater
+      backgroundColor: Colors.grey,
+      radius: 20,
+      backgroundImage: NetworkImage(
+        widget.imageUrl!,
       ),
     );
   }

@@ -10,7 +10,9 @@ class Trip {
   String joinedProfileImageUrl2;
 
   int tripDuration;
-  int numOfPeopleJoined;
+  //int numOfPeopleJoined;
+
+  List<User> peopleJoined;
 
   Trip(
       {required this.user,
@@ -20,7 +22,8 @@ class Trip {
       this.joinedProfileImageUrl1 = "",
       this.joinedProfileImageUrl2 = "",
       this.tripDescription = "",
-      this.numOfPeopleJoined = 0});
+      //this.numOfPeopleJoined = 0,
+      required this.peopleJoined});
 }
 
 List<Trip> listOfTrips = [
@@ -33,15 +36,20 @@ List<Trip> listOfTrips = [
       joinedProfileImageUrl2: diana,
       tripDescription:
           "Sed et magna voluptua sanctus kasd. Diam invidunt tempor et eirmod consetetur amet ipsum, takimata ipsum sadipscing est ea takimata",
-      numOfPeopleJoined: 5),
+      //numOfPeopleJoined: 5,
+      peopleJoined: []),
   Trip(
-      user: User(firstName: "Diana", profilePhotoUrl: diana),
-      destination: "Luxembourg",
-      tripDuration: 5,
-      tripImageUrl: lux,
-      joinedProfileImageUrl1: andrew,
-      joinedProfileImageUrl2: josef,
-      numOfPeopleJoined: 3),
+    user: User(firstName: "Diana", profilePhotoUrl: diana),
+    destination: "Luxembourg",
+    tripDuration: 5,
+    tripImageUrl: lux,
+    joinedProfileImageUrl1: andrew,
+    joinedProfileImageUrl2: josef,
+    //numOfPeopleJoined: 3,
+    peopleJoined: [
+      User(firstName: 'Vincent', profilePhotoUrl: vincent),
+    ],
+  ),
   Trip(
       user: User(firstName: "Vincent", profilePhotoUrl: vincent),
       destination: "Shanghai",
@@ -51,7 +59,11 @@ List<Trip> listOfTrips = [
       joinedProfileImageUrl2: andrew,
       tripDescription:
           "Demain d'une ô qui l'art qu'un qui, dans mais face qu'elle sa gaze soucieux, la et mignard quel beauté voici le fait cette hélas. L'abri et trésor face pauvre long,.",
-      numOfPeopleJoined: 8),
+      //numOfPeopleJoined: 8,
+      peopleJoined: [
+        User(firstName: 'Jennifer', profilePhotoUrl: jennifer),
+        User(firstName: 'Vincent', profilePhotoUrl: vincent),
+      ]),
   Trip(
       user: User(firstName: "Nora", profilePhotoUrl: nora),
       destination: "Dhaka",
@@ -61,5 +73,11 @@ List<Trip> listOfTrips = [
       joinedProfileImageUrl2: diana,
       tripDescription:
           "Thez vylag kynaal egyre vh iumhumnok, scegegkel fuhazatum ezes wklelue.",
-      numOfPeopleJoined: 10),
+      //numOfPeopleJoined: 10,
+      peopleJoined: [
+        User(firstName: 'Jennifer', profilePhotoUrl: jennifer),
+        User(firstName: 'Diana', profilePhotoUrl: diana),
+        User(firstName: 'Jennifer', profilePhotoUrl: jennifer),
+        User(firstName: 'Josef', profilePhotoUrl: josef),
+      ]),
 ];

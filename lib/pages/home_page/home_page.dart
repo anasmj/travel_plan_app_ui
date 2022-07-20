@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_ui2/pages/config.dart';
+import 'components/bottom_navigation.dart';
 import 'components/custom_appbar.dart';
 import 'package:travel_ui2/models/trip.dart';
 import 'components/trip_card.dart';
@@ -12,7 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  double _vContentSpacing = 8.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +23,7 @@ class HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
+
       body: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: defaultHorizontalPadding),
@@ -36,6 +37,10 @@ class HomePageState extends State<HomePage> {
           },
         ),
       ),
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }
+
+
+
