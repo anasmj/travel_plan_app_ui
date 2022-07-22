@@ -30,9 +30,16 @@ class HomePageState extends State<HomePage> {
         child: ListView.builder(
           itemCount: listOfTrips.length,
           itemBuilder: (BuildContext context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: TripCard(trip: listOfTrips[index]),
+            return GestureDetector(
+              onTap: () => Navigator.pushNamed(
+                context,
+                '/trip_details',
+                arguments: listOfTrips[index],
+              ), //TODO: send index number to use as tag for HERO widget
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TripCard(trip: listOfTrips[index]),
+              ),
             );
           },
         ),
@@ -41,6 +48,3 @@ class HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:travel_ui2/url.dart';
 import '../../../models/trip.dart';
 
 class TripCard extends StatelessWidget {
@@ -38,7 +37,7 @@ class TripCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   const Spacer(),
-                  TimeStamp(),
+                  const TimeStamp(),
                 ],
               ),
             ),
@@ -62,9 +61,8 @@ class TripCard extends StatelessWidget {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    if (trip.peopleJoined.isEmpty) Text('Empty'),
                     if (trip.peopleJoined.length == 1)
-                      SingleAvater(
+                      SingleAvatar(
                           imageUrl: trip.peopleJoined[0].profilePhotoUrl),
                     if (trip.peopleJoined.length == 2) getProfilePhotoForTwo(),
                     if (trip.peopleJoined.length > 2)
@@ -136,19 +134,19 @@ class TripCard extends StatelessWidget {
         //middle image
         Positioned(
           left: -36,
-          child: SingleAvater(
+          child: SingleAvatar(
             imageUrl: trip.peopleJoined[2].profilePhotoUrl,
           ),
         ),
         Positioned(
           left: -18,
-          child: SingleAvater(
+          child: SingleAvatar(
             imageUrl: trip.peopleJoined[1].profilePhotoUrl,
           ),
         ),
 
         //front image
-        SingleAvater(
+        SingleAvatar(
           numOfPeopleJoined: trip.peopleJoined.length,
         ),
       ],
@@ -162,12 +160,12 @@ class TripCard extends StatelessWidget {
         //backward image
         Positioned(
           left: -18,
-          child: SingleAvater(
+          child: SingleAvatar(
             imageUrl: trip.peopleJoined[1].profilePhotoUrl,
           ),
         ),
         //front image
-        SingleAvater(
+        SingleAvatar(
           imageUrl: trip.peopleJoined[0].profilePhotoUrl,
         ),
       ],
@@ -210,36 +208,37 @@ class TripCard extends StatelessWidget {
     );
   }
 
+  //PHOTO OF A TRIP IN DECORATED CONTAINER
   Container getTripPhoto(Size screenSize) {
     return Container(
-        height: 300,
-        width: screenSize.width * 95,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
+      height: 300,
+      width: screenSize.width * 95,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
         ),
-        // child: ShowTripImage(
-        //   networkImgUrl: trip.tripImageUrl,
-        child: Stack(
-          children: [
-            const Center(child: CircularProgressIndicator()),
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-              child: FadeInImage.memoryNetwork(
-                height: 300,
-                width: double.infinity,
-                placeholder: kTransparentImage,
-                image: trip.tripImageUrl,
-                fit: BoxFit.cover,
-              ),
+      ),
+      child: Stack(
+        children: [
+          const Center(child: CircularProgressIndicator()),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            child: FadeInImage.memoryNetwork(
+              height: 300,
+              width: double.infinity,
+              placeholder: kTransparentImage,
+              image: trip.tripImageUrl,
+              fit: BoxFit.cover,
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
+  //DECORATION OF MAIN CONTAINER
   BoxDecoration getContainerDecoration() {
     return const BoxDecoration(
       color: Colors.white,
@@ -258,6 +257,7 @@ class TripCard extends StatelessWidget {
   }
 }
 
+// TIME STAMP OF A POST
 class TimeStamp extends StatelessWidget {
   const TimeStamp({
     Key? key,
@@ -273,29 +273,6 @@ class TimeStamp extends StatelessWidget {
   }
 }
 
-//FETCHES IMAGES FROM NETWOWORK
-// ignore: must_be_immutable
-// class CircularIamge extends StatelessWidget {
-//   String url = "";
-//   CircularIamge({super.key, required this.url});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: [
-//         const Center(
-//           child: CircularProgressIndicator(),
-//         ),
-//         FadeInImage.memoryNetwork(
-//           placeholder: kTransparentImage,
-//           image: url,
-//           fit: BoxFit.cover,
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 //RETURNS JOIN BUTTON
 class JoinTripButton extends StatelessWidget {
   const JoinTripButton({
@@ -305,7 +282,9 @@ class JoinTripButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        print('join pressed');
+      },
       style: TextButton.styleFrom(
           primary: Colors.black,
           backgroundColor: Theme.of(context).primaryColor,
@@ -320,49 +299,18 @@ class JoinTripButton extends StatelessWidget {
   }
 }
 
-//PROVIDES TRIP IMAGE
-class ShowTripImage extends StatelessWidget {
-  const ShowTripImage({
-    Key? key,
-    required String networkImgUrl,
-  })  : _networkImgUrl = networkImgUrl,
-        super(key: key);
-
-  final String _networkImgUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const Center(child: CircularProgressIndicator()),
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-          child: FadeInImage.memoryNetwork(
-            height: 300,
-            width: double.infinity,
-            placeholder: kTransparentImage,
-            image: _networkImgUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// TODO:  working on avaters
-class SingleAvater extends StatefulWidget {
-  SingleAvater({super.key, this.imageUrl, this.numOfPeopleJoined});
+//RETURNS AN AVATAR WITH IMAGE OR INTEGER
+class SingleAvatar extends StatefulWidget {
+  SingleAvatar({super.key, this.imageUrl, this.numOfPeopleJoined});
 
   String? imageUrl;
   int? numOfPeopleJoined;
 
   @override
-  State<SingleAvater> createState() => _MyAvaterState();
+  State<SingleAvatar> createState() => _MyAvaterState();
 }
 
-class _MyAvaterState extends State<SingleAvater> {
+class _MyAvaterState extends State<SingleAvatar> {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
@@ -380,12 +328,11 @@ class _MyAvaterState extends State<SingleAvater> {
   CircleAvatar getNoOfPeopleJoined() {
     return CircleAvatar(
       //main circle avater
-      backgroundColor: Theme.of(context).colorScheme.primary,
       radius: 20,
       child: widget.numOfPeopleJoined != null
           ? Text(
               '+${(widget.numOfPeopleJoined! - 2).toString()}',
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.black),
             )
           : const Text(''),
     );
