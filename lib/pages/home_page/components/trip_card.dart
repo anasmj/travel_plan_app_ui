@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:travel_ui2/pages/shared_widgets/tripple_photo.dart';
 import '../../../models/trip.dart';
+import '../../shared_widgets/profile_photo.dart';
 
 class TripCard extends StatelessWidget {
   final Trip trip;
@@ -24,11 +26,7 @@ class TripCard extends StatelessWidget {
               //profile picture with name , time stamp
               child: Row(
                 children: [
-                  CircleAvatar(
-                    //backgroundColor: Colors.blue,
-                    radius: 25,
-                    backgroundImage: NetworkImage(trip.user.profilePhotoUrl),
-                  ),
+                  ProfilePhoto(profilePhotoUrl: trip.user.profilePhotoUrl),
                   const SizedBox(
                     width: 4.0,
                   ),
@@ -42,6 +40,8 @@ class TripCard extends StatelessWidget {
               ),
             ),
           ),
+
+          ///MAIN IMAGE IN STACK
           Stack(
             alignment: AlignmentDirectional.bottomCenter,
             clipBehavior: Clip.none,
@@ -55,20 +55,11 @@ class TripCard extends StatelessWidget {
                 child: getTripDurationText(context, trip.tripDuration),
               ),
 
+              ///PHOTO OF WHO JOINED A TRIOP
               Positioned(
                 top: 12,
                 right: 12,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    if (trip.peopleJoined.length == 1)
-                      SingleAvatar(
-                          imageUrl: trip.peopleJoined[0].profilePhotoUrl),
-                    if (trip.peopleJoined.length == 2) getProfilePhotoForTwo(),
-                    if (trip.peopleJoined.length > 2)
-                      getMoreThanTwoProfilePhoto(),
-                  ],
-                ),
+                child: TripplePhoto(joinedUsers: trip.peopleJoined),
               ),
 
               Positioned(
@@ -124,51 +115,6 @@ class TripCard extends StatelessWidget {
       'On Trip',
       style:
           Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.amber),
-    );
-  }
-
-  Stack getMoreThanTwoProfilePhoto() {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        //middle image
-        Positioned(
-          left: -36,
-          child: SingleAvatar(
-            imageUrl: trip.peopleJoined[2].profilePhotoUrl,
-          ),
-        ),
-        Positioned(
-          left: -18,
-          child: SingleAvatar(
-            imageUrl: trip.peopleJoined[1].profilePhotoUrl,
-          ),
-        ),
-
-        //front image
-        SingleAvatar(
-          numOfPeopleJoined: trip.peopleJoined.length,
-        ),
-      ],
-    );
-  }
-
-  Stack getProfilePhotoForTwo() {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        //backward image
-        Positioned(
-          left: -18,
-          child: SingleAvatar(
-            imageUrl: trip.peopleJoined[1].profilePhotoUrl,
-          ),
-        ),
-        //front image
-        SingleAvatar(
-          imageUrl: trip.peopleJoined[0].profilePhotoUrl,
-        ),
-      ],
     );
   }
 
@@ -282,70 +228,17 @@ class JoinTripButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        print('join pressed');
-      },
+      onPressed: () {},
       style: TextButton.styleFrom(
-          primary: Colors.black,
-          backgroundColor: Theme.of(context).primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          )),
+        primary: Colors.black,
+        backgroundColor: Theme.of(context).primaryColor, //TODO: FIX FROM THEME
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
       child: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 18),
         child: Text('JOIN'),
-      ),
-    );
-  }
-}
-
-//RETURNS AN AVATAR WITH IMAGE OR INTEGER
-class SingleAvatar extends StatefulWidget {
-  SingleAvatar({super.key, this.imageUrl, this.numOfPeopleJoined});
-
-  String? imageUrl;
-  int? numOfPeopleJoined;
-
-  @override
-  State<SingleAvatar> createState() => _MyAvaterState();
-}
-
-class _MyAvaterState extends State<SingleAvatar> {
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      // border
-      backgroundColor: Colors.white,
-      radius: 22,
-      child: widget.numOfPeopleJoined !=
-              null //RETURNS NUMBER OR PROFILE PICTURE DEPENDING ON PROVIDED VALUE
-          ? getNoOfPeopleJoined()
-          : getProfilePicture(),
-    );
-  }
-
-  //RETURNS A NUMBER IN A CIRCLE AVATAR
-  CircleAvatar getNoOfPeopleJoined() {
-    return CircleAvatar(
-      //main circle avater
-      radius: 20,
-      child: widget.numOfPeopleJoined != null
-          ? Text(
-              '+${(widget.numOfPeopleJoined! - 2).toString()}',
-              style: const TextStyle(color: Colors.black),
-            )
-          : const Text(''),
-    );
-  }
-
-  //RETURNS PROFILE PICTURE
-  CircleAvatar getProfilePicture() {
-    return CircleAvatar(
-      //main circle avater
-      backgroundColor: Colors.grey,
-      radius: 20,
-      backgroundImage: NetworkImage(
-        widget.imageUrl!,
       ),
     );
   }

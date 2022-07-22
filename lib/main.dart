@@ -16,19 +16,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Travel UI',
       theme: ThemeData(
-        primaryColor: Colors.amber,
+        primarySwatch: Colors.amber, // circle avatar
         textTheme: const TextTheme(
           headline6:
               TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        iconTheme: const IconThemeData(
-          color: Colors.blueGrey,
+        iconTheme: IconThemeData(
+          color: Colors.grey.shade600,
         ),
       ),
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
-        '/trip_details': (context) => TripDetails()
+        '/trip_details': (context) => const TripDetails()
       },
     );
   }
