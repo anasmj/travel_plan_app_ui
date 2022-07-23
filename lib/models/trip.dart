@@ -72,7 +72,7 @@ List<Trip> listOfTrips = [
       joinedProfileImageUrl1: andrew,
       joinedProfileImageUrl2: diana,
       tripDescription:
-          "Thez vylag kynaal egyre vh iumhumnok, scegegkel fuhazatum ezes wklelue.",
+          "Clita lorem no lorem diam vero justo magna dolores nonumy sit, et dolor invidunt gubergren magna, dolore takimata lorem erat dolor sea et et justo, ipsum et kasd et at kasd clita sit no. Sadipscing sit gubergren clita consetetur amet sit. Justo dolores accusam voluptua labore dolor sea erat clita, ipsum eos nonumy diam sea et eos, no eos elitr et tempor sit stet duo sea ipsum. Sadipscing ut labore.Thez vylag kynaal egyre vh iumhumnok, scegegkel fuhazatum ezes wklelue.",
       //numOfPeopleJoined: 10,
       peopleJoined: [
         User(firstName: 'Jennifer', profilePhotoUrl: jennifer),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:travel_ui2/pages/shared_widgets/profile_photo.dart';
+import 'package:travel_ui2/pages/shared_widgets/trip_duration_container.dart';
 import 'package:travel_ui2/pages/shared_widgets/tripple_photo.dart';
 import '../../models/trip.dart';
 
@@ -11,6 +12,8 @@ class TripDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final trip = ModalRoute.of(context)!.settings.arguments as Trip;
     final TextStyle? _customeStyle = Theme.of(context).textTheme.subtitle2;
+    final TextStyle _durationTextStyle =
+        Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white);
 
     return Scaffold(
       body: Stack(
@@ -23,7 +26,28 @@ class TripDetails extends StatelessWidget {
             image: trip.tripImageUrl,
             fit: BoxFit.cover,
           ),
-
+          Positioned(
+            top: 40,
+            left: 20,
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TripDurationContainer(tripDuration: trip.tripDuration),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "days trip",
+                  style: _durationTextStyle,
+                ),
+              ],
+            ),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
 

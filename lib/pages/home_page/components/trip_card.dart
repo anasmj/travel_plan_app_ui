@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:travel_ui2/pages/shared_widgets/trip_duration_container.dart';
 import 'package:travel_ui2/pages/shared_widgets/tripple_photo.dart';
 import '../../../models/trip.dart';
+import '../../shared_widgets/join_trip_button.dart';
 import '../../shared_widgets/profile_photo.dart';
 
 class TripCard extends StatelessWidget {
@@ -48,11 +50,26 @@ class TripCard extends StatelessWidget {
             children: [
               //Contains trip photo
               getTripPhoto(screenSize),
-              //TRIP DURATION
+
+              //TRIP DURATION WITH TEXT
               Positioned(
                 top: 12,
                 left: 12,
-                child: getTripDurationText(context, trip.tripDuration),
+                child: Row(
+                  children: [
+                    TripDurationContainer(tripDuration: trip.tripDuration),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "days trip",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
 
               ///PHOTO OF WHO JOINED A TRIOP
@@ -82,7 +99,13 @@ class TripCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(
                 left: 8.0, top: 30.0, right: 8.0, bottom: 12),
-            child: Text(trip.tripDescription),
+            child: trip.tripDescription.isNotEmpty
+                ? Text(
+                    trip.tripDescription,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                : const Text('No Description'),
           ),
           const Divider(
             indent: 20,
@@ -115,42 +138,6 @@ class TripCard extends StatelessWidget {
       'On Trip',
       style:
           Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.amber),
-    );
-  }
-
-  Row getTripDurationText(BuildContext context, int tripDuration) {
-    return Row(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-          ),
-          child: Center(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
-              child: Text(
-                tripDuration.toString(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontWeight: FontWeight.w900),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          "days trip",
-          style: Theme.of(context)
-              .textTheme
-              .headline6!
-              .copyWith(color: Colors.white),
-        ),
-      ],
     );
   }
 
@@ -215,58 +202,6 @@ class TimeStamp extends StatelessWidget {
       'Two hours ago',
       style:
           Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey),
-    );
-  }
-}
-
-//RETURNS JOIN BUTTON
-class JoinTripButton extends StatelessWidget {
-  const JoinTripButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {},
-      style: TextButton.styleFrom(
-        primary: Colors.black,
-        backgroundColor: Theme.of(context).primaryColor, //TODO: FIX FROM THEME
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 18),
-        child: Text('JOIN'),
-      ),
-    );
-  }
-}
-
-//RETURNS WHITE LITTLE CONTAINER TO SHOW DIGIT/S
-class TripDurationContainer extends StatelessWidget {
-  final String tripDuration;
-  const TripDurationContainer({super.key, required this.tripDuration});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
-          child: Text(
-            tripDuration,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .copyWith(fontWeight: FontWeight.w900),
-          ),
-        ),
-      ),
     );
   }
 }
