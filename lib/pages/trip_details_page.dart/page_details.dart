@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:travel_ui2/pages/shared_widgets/join_trip_button.dart';
 import 'package:travel_ui2/pages/shared_widgets/profile_photo.dart';
 import 'package:travel_ui2/pages/shared_widgets/trip_duration_container.dart';
 import 'package:travel_ui2/pages/shared_widgets/tripple_photo.dart';
@@ -48,95 +49,106 @@ class TripDetails extends StatelessWidget {
               ],
             ),
           ),
+
           Align(
             alignment: Alignment.bottomCenter,
 
             //CONTAINER THAT HOLDS BOTTOM SHEET LIKE SHAPE
-            child: Container(
-              decoration: roundedTopBorders(),
-              width: double.infinity,
-              height: 300,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        ProfilePhoto(
-                            profilePhotoUrl: trip.user.profilePhotoUrl),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Text(trip.user.firstName,
-                            style: _customeStyle!
-                                .copyWith(fontWeight: FontWeight.bold)),
-                        const Spacer(),
-                        const Text('13 April'),
-                      ],
-                    ),
-                    const Text(
-                        "Sont lors repeché des l'aube l'éveil rousseurs qu'un en la revé, de punaises mer vers aux comme désire. Noirs presque."),
-                    Row(
+            child: Stack(
+              alignment: Alignment.topCenter,
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  decoration: roundedTopBorders(),
+                  width: double.infinity,
+                  height: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30, horizontal: 30),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Next Trip',
-                          style: _customeStyle.copyWith(
-                              color: Colors.grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w900),
+                        Row(
+                          children: [
+                            ProfilePhoto(
+                                profilePhotoUrl: trip.user.profilePhotoUrl),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Text(trip.user.firstName,
+                                style: _customeStyle!
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                            const Spacer(),
+                            const Text('13 April'),
+                          ],
                         ),
-                        const Icon(
-                          Icons.car_repair,
-                          color: Colors.black,
+                        const Text(
+                            "Sont lors repeché des l'aube l'éveil rousseurs qu'un en la revé, de punaises mer vers aux comme désire. Noirs presque."),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Next Trip',
+                              style: _customeStyle.copyWith(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                            const Icon(
+                              Icons.car_repair,
+                              color: Colors.black,
+                            ),
+                            Text(
+                              'Bali',
+                              style: _customeStyle,
+                            ),
+                            Text(
+                              '***',
+                              style: _customeStyle,
+                            ),
+                            Text(
+                              'Combodia',
+                              style: _customeStyle,
+                            ),
+                            const SizedBox(
+                              width: 100,
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Bali',
-                          style: _customeStyle,
-                        ),
-                        Text(
-                          '***',
-                          style: _customeStyle,
-                        ),
-                        Text(
-                          'Combodia',
-                          style: _customeStyle,
-                        ),
-                        const SizedBox(
-                          width: 100,
-                        ),
-                      ],
-                    ),
-                    // TripplePhoto(joinedUsers: trip.peopleJoined)
+                        // TripplePhoto(joinedUsers: trip.peopleJoined)
 
-                    //PHOTO OF PEOPLE JOINED
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: trip.peopleJoined.length > 2 ? 30 : 10,
-                      ),
-                      child: TripplePhoto(joinedUsers: trip.peopleJoined),
-                    ),
-                    const Divider(
-                      thickness: 3,
-                    ),
-                    //ICONS IN BOTTOM
-                    Row(
-                      children: const [
-                        Icon(Icons.favorite),
-                        SizedBox(
-                          width: 20,
+                        //PHOTO OF PEOPLE JOINED
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: trip.peopleJoined.length > 2 ? 30 : 10,
+                          ),
+                          child: TripplePhoto(joinedUsers: trip.peopleJoined),
                         ),
-                        Icon(Icons.share),
-                        Spacer(),
-                        Icon(Icons.bookmark),
+                        const Divider(
+                          thickness: 3,
+                        ),
+                        //ICONS IN BOTTOM
+                        Row(
+                          children: const [
+                            Icon(Icons.favorite),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Icon(Icons.share),
+                            Spacer(),
+                            Icon(Icons.bookmark),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                const Positioned(
+                  top: -25,
+                  child: JoinTripButton(),
+                ),
+              ],
             ),
           )
         ],

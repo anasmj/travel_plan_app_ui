@@ -17,8 +17,10 @@ class JoinTripButton extends StatelessWidget {
         ),
       ),
       child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 18),
-        child: Text('JOIN'),
+        padding: EdgeInsets.symmetric(horizontal: 14),
+        child: Text(
+          'JOIN',
+        ),
       ),
     );
   }

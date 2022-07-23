@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_ui2/pages/config.dart';
-import 'components/bottom_navigation.dart';
+import '../shared_widgets/bottom_navigation_bar.dart';
 import 'components/custom_appbar.dart';
 import 'package:travel_ui2/models/trip.dart';
 import 'components/trip_card.dart';
